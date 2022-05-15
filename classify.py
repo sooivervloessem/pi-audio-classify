@@ -6,7 +6,7 @@ from audio_classifier import AudioClassifier
 from audio_classifier import AudioClassifierOptions
 
 # specify filename of tflite model
-model = "soundclassifier_with_metadata.tflite"
+model = "pi-audio-classify/soundclassifier_with_metadata.tflite"
 
 # Initialize the audio classification model
 options = AudioClassifierOptions(
@@ -44,11 +44,12 @@ while True:
   # Load the input audio and run classify.
   tensor_audio.load_from_audio_record(audio_record)
   categories = classifier.classify(tensor_audio)
-  os.system('clear') # clear the terminal so we overwrite the output every time
-  print("I guess it is:" , end =" ")
+  #os.system('clear') # clear the terminal so we overwrite the output every time
+  # print("I guess it is:" , end =" ")
   if len(categories) > 1:
-    print(categories[0].score*100,"% sure it is",categories[0].label)
-  print("Listening again...")
-
-
-
+    # print(categories[0].score*100,"% sure it is",categories[0].label)
+    file = open("iot_essentials/Project_label.txt", "w")
+    file.write((categories[0].label).rstrip().split(" ")[0])
+    file.close()
+  # print("Listening again...")
+  
